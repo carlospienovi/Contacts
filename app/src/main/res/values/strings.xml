@@ -13,5 +13,6 @@
     <string name="new_contact_save">Save</string>
     <string name="new_contact_image">New contact image</string>
     <string name="list_contact_image_description">List contact image</string>
+    <string name="button_take_picture">Take picture!</string>
 
 </resources>

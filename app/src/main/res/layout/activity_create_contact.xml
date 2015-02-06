@@ -47,8 +47,15 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/new_contact_image"
             android:layout_weight="1" />
+
     </LinearLayout>
 
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_take_picture"
+        android:id="@+id/button_take_picture" />
 
     <FrameLayout
         android:layout_width="fill_parent"

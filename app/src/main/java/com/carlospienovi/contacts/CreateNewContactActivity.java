@@ -3,7 +3,6 @@ package com.carlospienovi.contacts;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +23,7 @@ public class CreateNewContactActivity extends ActionBarActivity {
     public static final String NEW_CONTACT = "NEW_CONTACT";
     private static final int REQUEST_CODE_CAMERA = 1337;
 
-    Button mDoneButton;
+    Button mDoneButton, mButtonTakePicture;
     EditText mFirstName, mLastName, mNickname;
     ImageView mContactImage;
 
@@ -33,10 +31,23 @@ public class CreateNewContactActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_contact);
-        mFirstName = (EditText) findViewById(R.id.new_contact_name);
-        mLastName = (EditText) findViewById(R.id.new_contact_last_name);
-        mNickname = (EditText) findViewById(R.id.new_contact_nickname);
-        mContactImage = (ImageView) findViewById(R.id.new_contact_image);
+        init();
+        firstNameEditText();
+        prepareDoneButton();
+        takePicture();
+    }
+
+    private void takePicture() {
+        mButtonTakePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA);
+            }
+        });
+    }
+
+    private void firstNameEditText() {
         mFirstName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -53,14 +64,15 @@ public class CreateNewContactActivity extends ActionBarActivity {
                 mDoneButton.setEnabled(!TextUtils.isEmpty(s));
             }
         });
-        prepareDoneButton();
-        mContactImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA);
-            }
-        });
+    }
+
+    private void init() {
+        mDoneButton = (Button) findViewById(R.id.button_new_contact_save);
+        mFirstName = (EditText) findViewById(R.id.new_contact_name);
+        mLastName = (EditText) findViewById(R.id.new_contact_last_name);
+        mNickname = (EditText) findViewById(R.id.new_contact_nickname);
+        mContactImage = (ImageView) findViewById(R.id.new_contact_image);
+        mButtonTakePicture = (Button) findViewById(R.id.button_take_picture);
     }
 
     @Override
@@ -77,7 +89,6 @@ public class CreateNewContactActivity extends ActionBarActivity {
     }
 
     private void prepareDoneButton() {
-        mDoneButton = (Button) findViewById(R.id.button_new_contact_save);
         mDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
